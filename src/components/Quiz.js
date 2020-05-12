@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Question from "./Question";
+import Answers from "./Answers";
 
 class Quiz extends Component {
   constructor(props) {
@@ -12,71 +13,59 @@ class Quiz extends Component {
     }
   }
 
-
   onChanged = (e) => {
-    console.log('whats up')
     this.setState({
       checkedResult: e.currentTarget.value,
       isChecked: true,
     })
   }
 
-  onSubmit = (result) => {
-    console.log('no trigger')
-    this.props.nextQuestion(result)
-  }
-
-  // onChecked = (question) => {
-  //   console.log('how often is this called')
-  //   this.setState({
-  //     checkedResult: question,
-  //     isChecked: true,
-  //   })
-  // }
-
   render() {
+    const { checkedResult, isChecked } = this.state
+    const {
+      nextQuestion,
+      score,
+      quizComplete,
+      questions,
+      questionCounter,
+      answers
+    } = this.props
     return (
         <>
           {
-            this.props.quizComplete === false ? (
+            !quizComplete ? (
                 <>
-                <Question content={this.props.questions[this.props.questionCounter]}/>
-                <ul>
-                {this.props.answers[this.props.questionCounter].map( (question) => (
-                          <div>
-                            <li>
-                              <input
-                                  type="radio"
-                                  checked={this.state.checkedResult === question}
-                                  onChange={this.onChanged}
-
-                                  value={question}
-                              />
-                              <label>{question}</label>
-                            </li>
-                          </div>
-                      )
-
-
-                  )}
-            </ul>
-            {
-            this.state.isChecked === true && (
-            <button type="submit" onClick={ () => { this.props.nextQuestion(this.state.checkedResult)}}> Submit this answer {this.state.checkedResult} </button>
-            )
-            }
-            </>
+                  <Question question={questions[questionCounter]}/>
+                  <ul>
+                    {
+                      answers[questionCounter].map( (answer) => (
+                          <Answers
+                              answer={answer}
+                              onChanged={this.onChanged}
+                              checkedResult={checkedResult}
+                          />
+                        )
+                      )}
+                  </ul>
+                  {
+                    isChecked && (
+                        <button
+                            type="submit"
+                            onClick={ () => { nextQuestion(checkedResult)}}
+                        >
+                          Submit this answer
+                        </button>
+                    )
+                  }
+                  </>
             ) : (
                 <>
-                <h1>completed</h1>
-                  <p> your final score is {this.props.score}/3</p>
-                  </>
-
+                  <h1>completed</h1>
+                  <p> your final score is {score}/3</p>
+                </>
             )
           }
-
         </>
-
     )
   }
 }
@@ -88,7 +77,6 @@ Quiz.propTypes = {
   nextQuestion: PropTypes.func.isRequired,
   quizComplete: PropTypes.bool.isRequired,
   score: PropTypes.number.isRequired,
-  userResults: PropTypes.func.isRequired,
 };
 
 export default Quiz

@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 class Question extends Component {
   render() {
+    const { question } = this.props
     return (
-        <h2 className="question">{this.props.content}</h2>
+        <h2 className="question">{question}</h2>
     )
   }
 }
 
 Question.propTypes = {
-  content: PropTypes.string.isRequired
+  question: PropTypes.string.isRequired
 };
 
 export default Question
