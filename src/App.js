@@ -64,11 +64,9 @@ class App extends Component {
         quizComplete: true,
       })
 
-      // this.userResults()
+      this.userResults()
 
     }
-
-   // this.userResults()
   }
 
 

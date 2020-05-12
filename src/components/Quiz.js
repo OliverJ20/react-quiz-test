@@ -10,10 +10,6 @@ class Quiz extends Component {
       isChecked: false,
       checkedResult: '',
     }
-
-    if( this.props.quizComplete === true) {
-      this.props.userResults()
-    }
   }
 
 
